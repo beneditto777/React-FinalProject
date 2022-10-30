@@ -23,9 +23,8 @@ function Navbar() {
 
   return (
     <>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div className="container-fluid">
-            
+        <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+            <div className="container-fluid p-3">
                 <Link to="/" className="navbar-brand">
                     <i className="fa-solid fa-clapperboard"></i>
                     &thinsp;
@@ -73,6 +72,7 @@ function Navbar() {
                             className="form-control me-2" 
                             type="search" 
                             placeholder="Search"
+                            // style={{width: "300px"}}
                             value={keyword}
                             onChange={(e) => setKeyword(e.target.value)}
                             onKeyDown={(e) => pressEnterToSearch(e)}

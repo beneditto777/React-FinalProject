@@ -10,7 +10,9 @@ function App() {
 
   return (
     <div className="container-fluid">
-      <Navbar/>
+      <div className="navbox">
+        <Navbar/>
+      </div>
       <div className="content" style={{minHeight: "80vh"}}>
         <Routes>
           <Route path="/" element={<Home/>}/>

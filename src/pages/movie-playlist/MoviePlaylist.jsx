@@ -7,10 +7,18 @@ function MoviePlaylist() {
     const [list, setList] = useState([])
     const [tempIndex, setTempIndex] = useState()
 
+    const renderList = () => {
+        if (JSON.parse(localStorage.getItem('playlist')) === null) {
+            setList([])
+        } else {
+            setList(JSON.parse(localStorage.getItem('playlist')))
+        }
+    }
+
     useEffect(() => {
         console.log(location);
         console.log(JSON.parse(localStorage.getItem('playlist')));
-        setList(JSON.parse(localStorage.getItem('playlist')))
+        renderList()
     },[location])
 
     const removeList = (index) => {
@@ -19,6 +27,63 @@ function MoviePlaylist() {
         localStorage.setItem('playlist', JSON.stringify(temp))
         setList(JSON.parse(localStorage.getItem('playlist')))
     }
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5
+    const pageNumberLimit = 5
+    const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
+    const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
+
+    const pages = []
+    for (let index = 1; index <= Math.ceil(list.length / itemsPerPage); index++) {
+        pages.push(index)
+    }
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = list.slice(indexOfFirstItem, indexOfLastItem);
+
+    const handleClick = (event) => {
+        setCurrentPage(Number(event.target.id));
+    }
+
+    const handleNext = () => {
+        setCurrentPage(currentPage + 1)
+    
+        if (currentPage + 1 > maxPageNumberLimit) {
+          setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
+          setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit)
+        }
+    }
+
+    const handlePrev = () => {
+        setCurrentPage(currentPage - 1)
+    
+        if ((currentPage - 1) % pageNumberLimit === 0) {
+          setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit)
+          setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit)
+        }
+    }
+
+    const temp = (index) => {
+        if (currentPage === 1) {
+            setTempIndex(index)
+        } else {
+            setTempIndex((5 * (currentPage - 1)) + (index))
+        }
+    }
+
+    const renderPageNumbers = pages.map((number) => {
+        if (number < maxPageNumberLimit + 1 && number > minPageNumberLimit) {
+            return(
+                <li className={currentPage === number ? "page-link active" : "page-link"} key={number} id={number} onClick={handleClick}>
+                    {number}
+                </li>
+            )
+        } else {
+            return null;
+        }
+    })
 
     const playlistMovie = () => {
         if (JSON.parse(localStorage.getItem('playlist')) === null) {
@@ -36,16 +101,16 @@ function MoviePlaylist() {
         } else {
             return(
                 <>
-                    {list.map((data, index) => (
+                    {currentItems.map((data, index) => (
                         <tr key={index}>
-                            <th scope="row" style={{textAlign: "center"}}>{index + 1}</th>
+                            <th scope="row" style={{textAlign: "center"}}>{currentPage === 1 ? (index + 1) : ((5 * (currentPage - 1)) + (index + 1))}</th>
                             <td><img src={data.Poster} className="card-img-top" style={{height: "200px", width: "auto"}} alt="" srcSet="" /></td>
                             <td>{data.Title}</td>
                             <td>{data.Year}</td>
                             <td>{data.Genre}</td>
                             <td style={{textAlign: "center"}}>{data.Runtime}</td>
                             <td style={{textAlign: "justify"}}>{data.Plot}</td>
-                            <td><button type="button" className="btn btn-outline-danger" onClick={() => setTempIndex(index)} data-bs-toggle="modal" data-bs-target="#modalNotif">Delete</button></td>
+                            <td><button type="button" className="btn btn-outline-danger" onClick={() => temp(index)} data-bs-toggle="modal" data-bs-target="#modalNotif">Delete</button></td>
                         </tr>
                     ))}
                 </>
@@ -98,6 +163,16 @@ function MoviePlaylist() {
                 </div>
                 </div>
             </div>
+            </div>
+
+            <div className="row mt-5 mb-5 justify-content-center">
+                <div className="col-8 d-flex justify-content-center"> 
+                    <div className="pagination">
+                        <button disabled={currentPage === pages[0] ? true : false} onClick={handlePrev}>&laquo;</button>
+                            {renderPageNumbers}
+                        <button disabled={currentPage === pages[pages.length - 1] ? true : false} onClick={handleNext}>&raquo;</button>
+                    </div>
+                </div>
             </div>
         </>
     )

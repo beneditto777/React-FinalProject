@@ -87,7 +87,7 @@ function Home() {
   }
 
   const refreshPage = () => {
-    window.location.reload()
+    // window.location.reload()
   }
 
   return (

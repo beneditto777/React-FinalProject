@@ -15,21 +15,16 @@ function SearchPage() {
     const [movieList, setMovieList] = useState([])
     const [movieDetail, setMovieDetail] = useState([])
 
-    const [currentPage, setCurrentPage] = useState(1);
-    // const [pageNumberLimit, setpageNumberLimit] = useState(5);
+    const [currentPage, setCurrentPage] = useState(1)
     const pageNumberLimit = 5
-    const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
-    const [minPageNumberLimit, setMinPageNumberLimit] = useState(0);
+    const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5)
+    const [minPageNumberLimit, setMinPageNumberLimit] = useState(0)
     let totalPage = Math.ceil(Number(result) / 10)
 
     const pages = []
     for (let index = 1; index <= totalPage; index++) {
         pages.push(index)
     }
-
-    // const indexOfLastItem = currentPage * itemsPerPage;
-    // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    // const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
     const handleClick = (event) => {
         setCurrentPage(Number(event.target.id));
@@ -42,10 +37,10 @@ function SearchPage() {
           setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
           setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit)
         }
-    };
+    }
 
     const handlePrev = () => {
-        setCurrentPage(currentPage - 1);
+        setCurrentPage(currentPage - 1)
     
         if ((currentPage - 1) % pageNumberLimit === 0) {
           setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit)
@@ -104,7 +99,7 @@ function SearchPage() {
     return(
         <>
             <h2 className="page-section-heading text-center text-uppercase text-secondary mt-4">SEARCH PAGE</h2>
-            <div className="row">
+            {/* <div className="row"> */}
                 {movieList === undefined ? 
                     <div className="card">
                         <div className="card-body">
@@ -114,7 +109,7 @@ function SearchPage() {
                         <img src={notFound} className="crad-img-bottom" alt=""/>
                     </div>
                     : 
-                    <div className="row align-items-center">
+                    <div className="row">
                         {movieList.map((data, index) => (
                             <div className="col-md-3 mt-3 d-flex justify-content-center" key={index}>
                                 <div className="card" style={{width: "20rem", objectFit: "cover"}}>
@@ -132,7 +127,7 @@ function SearchPage() {
                         ))}
                     </div>
                 }
-            </div>
+            {/* </div> */}
 
             <div className="row mt-5 mb-5 justify-content-center">
                 <div className="col-8 d-flex justify-content-center"> 
