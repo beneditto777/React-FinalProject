@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="container-fluid">
       <Navbar/>
-      <div className="content">
+      <div className="content" style={{minHeight: "80vh"}}>
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/search" element={<SearchPage/>}/>

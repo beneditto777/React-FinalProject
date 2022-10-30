@@ -46,9 +46,13 @@ function Footer() {
                 </section>
             </div>
 
+            {/* © */}
             <div className="text-center text-dark p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
-                © 2022 Movie
-                <a className="text-dark" href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+                <i className="fa-solid fa-clapperboard"/>
+                &thinsp;
+                Movie 2022
+                &thinsp;
+                <a className="text-dark" href="https://www.omdbapi.com/">www.omdbapi.com</a>
             </div>
         </footer>
     )

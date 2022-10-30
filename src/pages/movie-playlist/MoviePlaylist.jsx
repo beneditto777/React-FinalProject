@@ -19,6 +19,39 @@ function MoviePlaylist() {
         localStorage.setItem('playlist', JSON.stringify(temp))
         setList(JSON.parse(localStorage.getItem('playlist')))
     }
+
+    const playlistMovie = () => {
+        if (JSON.parse(localStorage.getItem('playlist')) === null) {
+            return(
+                <tr>
+                    <th colSpan="8" style={{textAlign: "center", color: "red", height: "50vh"}}>There is no movie playlist yet!</th>
+                </tr>
+            )
+        } else if (list.length === 0) {
+            return(
+                <tr>
+                    <th colSpan="8" style={{textAlign: "center", color: "red", height: "50vh"}}>There is no movie playlist yet!</th>
+                </tr>
+            )
+        } else {
+            return(
+                <>
+                    {list.map((data, index) => (
+                        <tr key={index}>
+                            <th scope="row" style={{textAlign: "center"}}>{index + 1}</th>
+                            <td><img src={data.Poster} className="card-img-top" style={{height: "200px", width: "auto"}} alt="" srcSet="" /></td>
+                            <td>{data.Title}</td>
+                            <td>{data.Year}</td>
+                            <td>{data.Genre}</td>
+                            <td style={{textAlign: "center"}}>{data.Runtime}</td>
+                            <td style={{textAlign: "justify"}}>{data.Plot}</td>
+                            <td><button type="button" className="btn btn-outline-danger" onClick={() => setTempIndex(index)} data-bs-toggle="modal" data-bs-target="#modalNotif">Delete</button></td>
+                        </tr>
+                    ))}
+                </>
+            )
+        }
+    }
     
     return(
         <>
@@ -41,25 +74,9 @@ function MoviePlaylist() {
                                 <th scope="col" style={{textAlign: "center"}}>Action</th>
                             </tr>
                         </thead>
-                        
-                            {list === null || list === [] ? 
-                                <h3>No data</h3>
-                                :
-                                <tbody>
-                                    {list.map((data, index) => (
-                                        <tr key={index}>
-                                            <th scope="row" style={{textAlign: "center"}}>{index + 1}</th>
-                                            <td><img src={data.Poster} className="card-img-top" style={{height: "200px", width: "auto"}} alt="" srcSet="" /></td>
-                                            <td>{data.Title}</td>
-                                            <td>{data.Year}</td>
-                                            <td>{data.Genre}</td>
-                                            <td style={{textAlign: "center"}}>{data.Runtime}</td>
-                                            <td style={{textAlign: "justify"}}>{data.Plot}</td>
-                                            <td><button type="button" className="btn btn-outline-danger" onClick={() => setTempIndex(index)} data-bs-toggle="modal" data-bs-target="#modalNotif">Delete</button></td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            }
+                        <tbody>
+                            {playlistMovie()}
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -77,7 +94,7 @@ function MoviePlaylist() {
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onClick={() => removeList(tempIndex)}>Delete</button>
+                    <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => removeList(tempIndex)}>Delete</button>
                 </div>
                 </div>
             </div>

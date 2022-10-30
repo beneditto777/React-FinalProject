@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom"
 import { url_omdb_search } from "../../api/api"
 import { url_omdb_detail } from "../../api/api"
 import noImage from "../../assets/image/noimage.png"
+import notFound from "../../assets/image/notfound.jpg"
 import "./pagination.css"
 
 
@@ -105,26 +106,18 @@ function SearchPage() {
             <h2 className="page-section-heading text-center text-uppercase text-secondary mt-4">SEARCH PAGE</h2>
             <div className="row">
                 {movieList === undefined ? 
-                    <div className="warning" style={{height: "50vh", marginTop: "10%"}}>
-                        <div className="card text-center">
-                            <div className="card-header">
-                                <h1 className="page-section-heading text-center">Not Found!</h1>
-                            </div>
-                            <div className="card-body">
-                                <h5 className="card-title">Special title treatment</h5>
-                                <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                                {/* <a href="#" class="btn btn-primary">Go somewhere</a> */}
-                            </div>
-                            <div className="card-footer text-muted">
-                                2 days ago
-                            </div>
+                    <div className="card">
+                        <div className="card-body">
+                        <h5 className="card-title text-center">Not Found!</h5>
+                        <p className="card-text text-center"><small className="text-muted">Try another movie title</small></p>
                         </div>
+                        <img src={notFound} className="crad-img-bottom" alt=""/>
                     </div>
                     : 
                     <div className="row align-items-center">
                         {movieList.map((data, index) => (
                             <div className="col-md-3 mt-3 d-flex justify-content-center" key={index}>
-                                <div className="card" style={{width: "30rem", objectFit: "cover"}}>
+                                <div className="card" style={{width: "20rem", objectFit: "cover"}}>
                                     <img src={data.Poster === "N/A" ? noImage : data.Poster} className="card-img-top" alt="" srcSet="" style={{height: "30rem"}}/>
                                     <div className="card-body">
                                         <h5 className="card-title" style={{overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", maxWidth: "250px"}}>{data.Title}</h5>
