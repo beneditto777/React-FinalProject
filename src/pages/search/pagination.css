@@ -41,3 +41,13 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+
+.spinner-grow {
+    width: 70px;
+    height: 70px;
+}
+
+.spinner-border {
+    width: 150px;
+    height: 150px;
+}

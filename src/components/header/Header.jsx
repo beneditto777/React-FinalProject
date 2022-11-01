@@ -1,25 +1,14 @@
-import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import Search from "../search/Search";
 
-function Navbar() {
+function Header() {
     let location = useLocation()
-    const history = useNavigate()
-    const [keyword, setKeyword] = useState("")
-    const buttonSearch = () => {
-        console.log(keyword);
-        history(
-            "/search",
-            {state: {keyword}}
-        )
-        setKeyword("")
-    }
+    let navigate = useNavigate()
 
-    const pressEnterToSearch = (e) => {
-        if (e.keyCode === 13 && e.key === "Enter") {
-            buttonSearch()
-        }
+    const handleLogout = () => {
+        localStorage.removeItem("token")
+        navigate("/login")
     }
-
 
   return (
     <>
@@ -34,7 +23,7 @@ function Navbar() {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarColor01">
-                    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul className="navbar-nav me-auto mt-1 mb-2 mb-lg-0">
                         <li className="nav-item">
                             {location.pathname === '/' ? 
                                 <Link to="/" className="nav-link active">
@@ -47,9 +36,6 @@ function Navbar() {
                             }
                         </li>
                         <li className="nav-item">
-                            {/* <Link to="/playlist" className="nav-link">
-                                Movie Playlist
-                            </Link> */}
                             {location.pathname === '/playlist' ? 
                                 <Link to="/playlist" className="nav-link active">
                                     Movie Playlist
@@ -60,24 +46,17 @@ function Navbar() {
                                 </Link>
                             }
                         </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/#">Pricing</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="/#">About</a>
-                        </li>
+                        {localStorage.getItem("token") && 
+                            <button 
+                                className="btn btn-outline-danger btn-sm"
+                                onClick={() => handleLogout()}
+                                >
+                                Logout
+                            </button>
+                        }
                     </ul>
                     <div className="d-flex">
-                        <input 
-                            className="form-control me-2" 
-                            type="search" 
-                            placeholder="Search"
-                            // style={{width: "300px"}}
-                            value={keyword}
-                            onChange={(e) => setKeyword(e.target.value)}
-                            onKeyDown={(e) => pressEnterToSearch(e)}
-                        />
-                        <button className="btn btn-outline-success" type="submit" onClick={() => buttonSearch()}>Search</button>
+                        <Search/>
                     </div>
                 </div>
             </div>
@@ -87,4 +66,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default Header;
