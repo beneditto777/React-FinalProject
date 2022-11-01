@@ -1,4 +1,4 @@
-import { url_omdb_favourite, url_omdb_search } from "../../api/api"
+import { url_omdb_detail, url_omdb_favourite, url_omdb_search } from "../../api/api"
 
 export const fetchMovies = () => {
     return async (dispatch) => {
@@ -64,7 +64,7 @@ export const fetchSearchPage = (keyword, currentPage) => {
         
         if (temp !== undefined) {
             await Promise.all(temp.map(async element =>(
-                await fetch(`https://www.omdbapi.com/?i=${element.imdbID}&apikey=6d6b67c`)
+                await fetch(`${url_omdb_detail}${element.imdbID}`)
                 .then(response => response.json())
                 .then(data => element.Rating = data.imdbRating)
             )))
