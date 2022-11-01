@@ -23,15 +23,12 @@ function Search() {
         }
     }
 
-
-
     return(
         <>
             <input 
                 className="form-control me-2" 
                 type="search" 
                 placeholder="Search"
-                // style={{width: "300px"}}
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 onKeyDown={(e) => pressEnterToSearch(e)}

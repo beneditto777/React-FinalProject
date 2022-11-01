@@ -50,7 +50,7 @@ function Footer() {
             <div className="text-center text-dark p-3" style={{backgroundColor: "rgba(0, 0, 0, 0.2)"}}>
                 <i className="fa-solid fa-clapperboard"/>
                 &thinsp;
-                Movie 2022
+                LK 2022
                 &thinsp;
                 <a className="text-dark" href="https://www.omdbapi.com/">www.omdbapi.com</a>
             </div>

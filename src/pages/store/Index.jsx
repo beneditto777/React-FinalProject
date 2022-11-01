@@ -13,6 +13,7 @@ const reducer = (state = initialStae, action) => {
     switch (action.type) {
         case "SET_LOADER":
             return {...state, loader: true}
+            
         case "SET_MOVIES":
             let data = action.payload ? action.payload : []
             return {...state, movies: data, loader: action.loader}

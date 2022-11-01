@@ -107,8 +107,8 @@ function SearchPage() {
     var temp = JSON.parse(localStorage.getItem('playlist'))
     var playlist = []
 
-    const addToPlaylist = (title) =>{
-        var moviePlaylistUrl = `${url_omdb_detail}${title}`
+    const addToPlaylist = (imdbID) =>{
+        var moviePlaylistUrl = `${url_omdb_detail}${imdbID}`
         fetch(moviePlaylistUrl)
         .then(response => response.json())
         .then((data) => {
@@ -121,9 +121,9 @@ function SearchPage() {
         })
     }
 
-    const getMovieDetail = (title) => {
+    const getMovieDetail = (imdbID) => {
         setLoaderDetail(true)
-        var movieDetailUrl = `${url_omdb_detail}${title}`
+        var movieDetailUrl = `${url_omdb_detail}${imdbID}`
         fetch(movieDetailUrl)
         .then(response => response.json())
         .then((data) => {
@@ -140,15 +140,15 @@ function SearchPage() {
                 <div className="row align-items-center">
                     {state.searchPage.map((data, index) => (
                         <div className="col-md-3 mt-3 d-flex justify-content-center" key={index}>
-                            <div className="card zoom" style={{width: "20rem", objectFit: "cover"}}>
+                            <div className="card zoom" style={{width: "20rem", objectFit: "cover"}} data-bs-toggle="modal" data-bs-target="#detailMovie" onClick={() => getMovieDetail(data.imdbID)}>
                                 <img src={data.Poster === "N/A" ? noImage : data.Poster} className="card-img-top" alt="" srcSet="" style={{height: "30rem"}}/>
                                 <div className="card-body">
                                     <h5 className="card-title" style={{overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis", maxWidth: "250px"}}>{data.Title}</h5>
                                     <p className="card-text">Year &emsp;&ensp;&nbsp;&nbsp;: {data.Year}</p>
                                     <p className="card-text">Rating&nbsp;&emsp;: {data.Rating} (IMDb)</p>
                                     <p className="card-text">Type &emsp;&ensp;&nbsp;: {data.Type}</p>
-                                    <button className="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#detailMovie" onClick={() => getMovieDetail(data.Title)}>Details</button>
-                                    <button className="btn btn-outline-dark" onClick={() => addToPlaylist(data.Title)} data-bs-toggle="modal" data-bs-target="#modalNotif">Add to Playlist</button>
+                                    <button className="btn btn-outline-secondary me-2" data-bs-toggle="modal" data-bs-target="#detailMovie" onClick={() => getMovieDetail(data.imdbID)}>Details</button>
+                                    <button className="btn btn-outline-dark" onClick={() => addToPlaylist(data.imdbID)} data-bs-toggle="modal" data-bs-target="#modalNotif">Add to Playlist</button>
                                 </div>
                             </div>
                         </div>
@@ -170,9 +170,6 @@ function SearchPage() {
 
 
     useEffect(() => {
-        // console.log("init page" , currentPage);
-        // console.log(location.state.currentPage);
-        // console.log('location.state.currentPage:',location.state.currentPage);
         dispatch(fetchSearchPage(keyword, location.state.currentPage));
         setMaxPageNumberLimit(5)
         setMinPageNumberLimit(0)
@@ -182,7 +179,7 @@ function SearchPage() {
 
     return(
         <>
-            <h2 className="page-section-heading text-center text-uppercase text-secondary mt-4">SEARCH PAGE</h2>
+            <h2 className="page-section-heading text-center text-uppercase text-secondary mt-4">SEARCH PAGE <i className="fa-solid fa-magnifying-glass"></i></h2>
             {state.loader === true ? 
                 <div className="d-flex justify-content-center mt-5">
                     <div className="spinner-border" role="status">
@@ -216,39 +213,37 @@ function SearchPage() {
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body d-flex justify-content-center">
-                        {/* <div class="card mb-3 w-100" style={{maxWidth: "540px"}}> */}
-                            <div className="row justify-content between">
-                                {loaderDetail === true ?
-                                    <div className="d-flex justify-content-center mt-5">
-                                        <div className="spinner-border" role="status">
-                                            <span className="visually-hidden">Loading...</span>
+                        <div className="row justify-content between">
+                            {loaderDetail === true ?
+                                <div className="d-flex justify-content-center mt-5">
+                                    <div className="spinner-border" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                                :
+                                <>
+                                    <div className="col-md-5">
+                                        <img src={movieDetail.Poster === "N/A" ? noImage : movieDetail.Poster} className="img-fluid rounded-start h-100 w-100" alt="" srcSet="" />
+                                    </div>
+                                    <div className="col-md-7">
+                                        <div className="card-body">
+                                            <h5 className="card-title mt-2 mb-2"><u>{movieDetail.Title}</u></h5>
+                                            <p className="card-text"> Year &ensp;&ensp;&ensp;&ensp;&nbsp;: {movieDetail.Year}</p>
+                                            <p className="card-text"> Rated &ensp;&ensp;&ensp;: {movieDetail.Rated}</p>
+                                            <p className="card-text"> Rating &ensp;&ensp;&thinsp;: {movieDetail.imdbRating} (IMDb)</p>
+                                            <p className="card-text">Release &ensp;&nbsp;: {movieDetail.Released}</p>
+                                            <p className="card-text">Runtime &ensp;: {movieDetail.Runtime}</p>
+                                            <p className="card-text">Genre &ensp;&ensp;&ensp;: {movieDetail.Genre}</p>
+                                            <p className="card-text"><small className="text-muted">{movieDetail.Plot}</small></p>
                                         </div>
                                     </div>
-                                    :
-                                    <>
-                                        <div className="col-md-5">
-                                            <img src={movieDetail.Poster} className="img-fluid rounded-start h-100 w-100" alt="" srcSet="" />
-                                        </div>
-                                        <div className="col-md-7">
-                                            <div className="card-body">
-                                                <h5 className="card-title mt-2 mb-2"><u>{movieDetail.Title}</u></h5>
-                                                <p className="card-text"> Year &ensp;&ensp;&ensp;&ensp;&nbsp;: {movieDetail.Year}</p>
-                                                <p className="card-text"> Rated &ensp;&ensp;&ensp;: {movieDetail.Rated}</p>
-                                                <p className="card-text">Release &ensp;&nbsp;: {movieDetail.Released}</p>
-                                                <p className="card-text">Runtime &ensp;: {movieDetail.Runtime}</p>
-                                                <p className="card-text">Genre &ensp;&ensp;&ensp;: {movieDetail.Genre}</p>
-                                                <p className="card-text"><small className="text-muted">{movieDetail.Plot}</small></p>
-                                            </div>
-                                        </div>
-                                    </>
-                                }
-                                
-                            </div>
-                        {/* </div> */}
+                                </>
+                            }
+                            
+                        </div>
                     </div>
-                    <div className="modal-footer">
+                    <div className="modal-footer d-flex justify-content-center">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        {/* <button type="button" class="btn btn-primary">Save changes</button> */}
                     </div>
                     </div>
                 </div>
@@ -265,9 +260,8 @@ function SearchPage() {
                     <div className="modal-body">
                         Successfully Add Movie Playlist!
                     </div>
-                    <div className="modal-footer">
+                    <div className="modal-footer d-flex justify-content-center">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Done</button>
-                        {/* <button type="button" class="btn btn-primary">Save changes</button> */}
                     </div>
                     </div>
                 </div>

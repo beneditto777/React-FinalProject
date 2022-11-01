@@ -6,6 +6,7 @@ function MoviePlaylist() {
     let location = useLocation()
     const [list, setList] = useState([])
     const [tempIndex, setTempIndex] = useState()
+    const [tempTitle, setTempTitle] = useState("")
 
     const renderList = () => {
         if (JSON.parse(localStorage.getItem('playlist')) === null) {
@@ -65,11 +66,13 @@ function MoviePlaylist() {
         }
     }
 
-    const temp = (index) => {
+    const temp = (index, title) => {
         if (currentPage === 1) {
             setTempIndex(index)
+            setTempTitle(title)
         } else {
             setTempIndex((5 * (currentPage - 1)) + (index))
+            setTempTitle(title)
         }
     }
 
@@ -89,13 +92,13 @@ function MoviePlaylist() {
         if (JSON.parse(localStorage.getItem('playlist')) === null) {
             return(
                 <tr>
-                    <th colSpan="8" style={{textAlign: "center", color: "red", height: "50vh"}}>There is no movie playlist yet!</th>
+                    <th colSpan="9" style={{textAlign: "center", color: "red", height: "50vh"}}>There is no movie playlist yet!</th>
                 </tr>
             )
         } else if (list.length === 0) {
             return(
                 <tr>
-                    <th colSpan="8" style={{textAlign: "center", color: "red", height: "50vh"}}>There is no movie playlist yet!</th>
+                    <th colSpan="9" style={{textAlign: "center", color: "red", height: "50vh"}}>There is no movie playlist yet!</th>
                 </tr>
             )
         } else {
@@ -104,13 +107,14 @@ function MoviePlaylist() {
                     {currentItems.map((data, index) => (
                         <tr key={index}>
                             <th scope="row" style={{textAlign: "center"}}>{currentPage === 1 ? (index + 1) : ((5 * (currentPage - 1)) + (index + 1))}</th>
-                            <td><img src={data.Poster} className="card-img-top" style={{height: "200px", width: "auto"}} alt="" srcSet="" /></td>
-                            <td>{data.Title}</td>
-                            <td>{data.Year}</td>
-                            <td>{data.Genre}</td>
+                            <td style={{textAlign: "center"}}><img src={data.Poster} className="card-img-top" style={{height: "200px", width: "auto"}} alt="" srcSet="" /></td>
+                            <td style={{textAlign: "center"}}>{data.Title}</td>
+                            <td style={{textAlign: "center"}}>{data.Year}</td>
+                            <td style={{textAlign: "center"}}>{data.Genre}</td>
                             <td style={{textAlign: "center"}}>{data.Runtime}</td>
                             <td style={{textAlign: "justify"}}>{data.Plot}</td>
-                            <td><button type="button" className="btn btn-outline-danger" onClick={() => temp(index)} data-bs-toggle="modal" data-bs-target="#modalNotif">Delete</button></td>
+                            <td style={{textAlign: "center", color: Number(data.imdbRating) > 7.5 ? "#54B435" : Number(data.imdbRating) > 5 && Number(data.imdbRating) < 7.5 ? "#FFDE00"  : "red"}}>{data.imdbRating} (IMDb)</td>
+                            <td style={{textAlign: "justify"}}><button type="button" className="btn btn-outline-danger" onClick={() => temp(index, data.Title)} data-bs-toggle="modal" data-bs-target="#modalNotif">Delete</button></td>
                         </tr>
                     ))}
                 </>
@@ -121,12 +125,12 @@ function MoviePlaylist() {
     return(
         <>
             <div className="row">
-                <h2 className="page-section-heading text-center text-uppercase text-secondary mt-4">MOVIE PLAYLIST</h2>
+                <h2 className="page-section-heading text-center text-uppercase text-secondary mt-4">MOVIE PLAYLIST <i className="fa-solid fa-rectangle-list"></i></h2>
             </div>
 
             <div className="row mt-3 justify-content-center">
                 <div className="col-10 d-flex justify-content-center">
-                    <table className="table table-bordered w-auto">
+                    <table className="table table-bordered table-dark table-hover w-auto border border-2 border-secondary">
                         <thead>
                             <tr>
                                 <th scope="col" style={{textAlign: "center"}}>No.</th>
@@ -136,6 +140,7 @@ function MoviePlaylist() {
                                 <th scope="col" style={{textAlign: "center"}}>Genre</th>
                                 <th scope="col" style={{textAlign: "center"}}>Runtime</th>
                                 <th scope="col" style={{textAlign: "center"}}>Plot</th>
+                                <th scope="col" style={{textAlign: "center"}}>Rating</th>
                                 <th scope="col" style={{textAlign: "center"}}>Action</th>
                             </tr>
                         </thead>
@@ -155,7 +160,7 @@ function MoviePlaylist() {
                     <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div className="modal-body">
-                    Are you sure you want to delete this movie?
+                    Are you sure you want to delete <b>{tempTitle}</b> from your playlist?
                 </div>
                 <div className="modal-footer">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

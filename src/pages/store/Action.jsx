@@ -25,7 +25,6 @@ export const fetchMovies = () => {
         const movies7 = await res7.json()
         const movies8 = await res8.json()
 
-        // console.log(movies1);
 
         temp.push(movies1)
         temp.push(movies2)
@@ -50,6 +49,7 @@ export const fetchSearchPage = (keyword, currentPage) => {
         dispatch({
             type: "SET_LOADER",
         })
+
         if (keyword === null) {
             keyword = ""
         }
@@ -57,7 +57,6 @@ export const fetchSearchPage = (keyword, currentPage) => {
         let temp = []
         let result = ""
         const res1 = await fetch(`${url_omdb_search}${keyword}&page=${currentPage}`)
-        console.log(res1);
         const search = await res1.json()
 
         temp = search.Search
@@ -68,7 +67,7 @@ export const fetchSearchPage = (keyword, currentPage) => {
                 await fetch(`https://www.omdbapi.com/?i=${element.imdbID}&apikey=6d6b67c`)
                 .then(response => response.json())
                 .then(data => element.Rating = data.imdbRating)
-                )))
+            )))
         }
             
         console.log("search", result);
