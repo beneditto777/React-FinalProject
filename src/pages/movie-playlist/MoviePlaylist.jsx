@@ -12,8 +12,10 @@ function MoviePlaylist() {
     const renderList = () => {
         if (JSON.parse(localStorage.getItem('playlist')) === null) {
             setList([])
+            window.scrollTo(0,0)
         } else {
             setList(JSON.parse(localStorage.getItem('playlist')))
+            window.scrollTo(0,0)
         }
     }
 
@@ -32,6 +34,7 @@ function MoviePlaylist() {
         if (currentItems.length === 1) {
             setCurrentPage(currentPage - 1)
         }
+        window.scrollTo(0,0)
     }
 
     const itemsPerPage = 5
@@ -59,6 +62,7 @@ function MoviePlaylist() {
           setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
           setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit)
         }
+        window.scrollTo(0,0)
     }
 
     const handlePrev = () => {
@@ -68,6 +72,7 @@ function MoviePlaylist() {
           setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit)
           setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit)
         }
+        window.scrollTo(0,0)
     }
 
     const temp = (index, title) => {

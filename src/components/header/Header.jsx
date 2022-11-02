@@ -26,22 +26,22 @@ function Header() {
                     <ul className="navbar-nav me-auto mt-1 mb-2 mb-lg-0">
                         <li className="nav-item">
                             {location.pathname === '/' ? 
-                                <Link to="/" className="nav-link active">
+                                <Link to="/" className="nav-link active" onClick={window.scrollTo(0,0)}>
                                     Home
                                 </Link>
                                 :
-                                <Link to="/" className="nav-link">
+                                <Link to="/" className="nav-link" onClick={window.scrollTo(0,0)}>
                                     Home
                                 </Link>
                             }
                         </li>
                         <li className="nav-item">
                             {location.pathname === '/playlist' ? 
-                                <Link to="/playlist" className="nav-link active">
+                                <Link to="/playlist" className="nav-link active" onClick={window.scrollTo(0,0)}>
                                     Movie Playlist
                                 </Link>
                                 :
-                                <Link to="/playlist" className="nav-link">
+                                <Link to="/playlist" className="nav-link" onClick={window.scrollTo(0,0)}>
                                     Movie Playlist
                                 </Link>
                             }
