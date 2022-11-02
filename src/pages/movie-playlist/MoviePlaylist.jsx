@@ -7,6 +7,7 @@ function MoviePlaylist() {
     const [list, setList] = useState([])
     const [tempIndex, setTempIndex] = useState()
     const [tempTitle, setTempTitle] = useState("")
+    const [currentPage, setCurrentPage] = useState(1);
 
     const renderList = () => {
         if (JSON.parse(localStorage.getItem('playlist')) === null) {
@@ -19,17 +20,20 @@ function MoviePlaylist() {
     useEffect(() => {
         console.log(location);
         console.log(JSON.parse(localStorage.getItem('playlist')));
+        // console.log("Curr", pages);
         renderList()
-    },[location])
+    },[location, currentPage])
 
     const removeList = (index) => {
         var temp = JSON.parse(localStorage.getItem('playlist'))
         temp.splice(index, 1)
         localStorage.setItem('playlist', JSON.stringify(temp))
         setList(JSON.parse(localStorage.getItem('playlist')))
+        if (currentItems.length === 1) {
+            setCurrentPage(currentPage - 1)
+        }
     }
 
-    const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5
     const pageNumberLimit = 5
     const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
@@ -50,7 +54,7 @@ function MoviePlaylist() {
 
     const handleNext = () => {
         setCurrentPage(currentPage + 1)
-    
+        
         if (currentPage + 1 > maxPageNumberLimit) {
           setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit)
           setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit)
